@@ -1,10 +1,12 @@
 This is supposed to be an implementation of an N^D TicTacToe Game. Meaning D dimensions and N rows in each dimension.
 
-Base is in TField.h. The TField is basically a wrapper for an N^D sized std::vector for either TSpaceState::X, ::Y, or ::empty, which can be accessed with a TIndex element. TIndex is a class which stores indices in human readable form (1 - N, 1 - N, ... ) with length D. 
-Checking for winners is a little was a little more complicated with an arbitrary field size. The idea is to go through every space, check if it is not ::empty and if it is a corner piece (meaning has at least one index 1 or N). Then check every possible direction that allows a win and go along each direction, checking the spaces on the way. TD) irection helps with this, it is basically a vector pointing along possible paths (-1 / 0 / 1, -1 / 0 / 1, ...) (with D length).
+The playing field is implemented in the Grid class, which is a fancy wrapper for an std::vector of SpaceStates {X, O, empty}. 
+Access is controlled by the Position class, which converts indices from [1-N,..,1-N] (length D) to the index in the vector.
+Since hardcoding the winning positions is quite difficult for N^D TicTacToe, the field is checked by going through all possible cornerpieces and checking the diagonals that originate from them to be of the same SpaceState (!= empty0
+This is helped by the Direction class, which is used internally
 
-TPlayer and TObserver are abstract classes, which are important for the TGame class. TObservers are notified whenever a move is made, and TPlayers are additionally forced to make a move. The TGame class then takes 2 TPlayers, and arbitrary TObservers, and pits the players against each other, as expected from TicTacToe.
+To play there are abstract Player and Observer classes, to implement any kind of player (Human, Network, Heuristic AI, Neural Network AI,...)
 
-TAI.h contains a simple AI that checks every possible move (inefficiently) for a given Game Tree depth and applies a heuristic function(which is meh) to the leafs. Then a MinMax algorithm is used to pick a move.
+Heuristic AI is a simple AI that goes along the game tree and evaluates using a meh heuristic.
 
-
+NeuralNetworkAI is a simple AI that uses a Neural Network implementation to generate a move.
