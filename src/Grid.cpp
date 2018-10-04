@@ -5,7 +5,7 @@ namespace TicTacToe
 {
 
 
-Grid::Grid(unsigned int N, unsigned int D) : N(N), D(D)
+Grid::Grid(unsigned int N, unsigned int D) : N(N), D(D), winner(SpaceState::empty)
 {
 	spaces.resize((int)pow(N, D));
 	Clear();
@@ -134,18 +134,20 @@ SpaceState Grid::CheckForWinner(const Position& start) const
 
 SpaceState Grid::CheckForWinner()
 {
+	if(winner != SpaceState::empty)
+		return winner;
+	
 	Position start(*this);
 	SpaceState ss;
-	
 	while(start)	{	// Take every space as a possible starting point
 		ss = CheckForWinner(start);
 		if(ss != SpaceState::empty) {
 			winner = ss;
-			return ss;
+			break;
 		}
 		start++;
 	}
-	return SpaceState::empty;
+	return winner;
 }
 
 unsigned int Grid::getN() const

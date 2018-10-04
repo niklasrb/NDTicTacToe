@@ -58,11 +58,11 @@ SpaceState Game::StartGame()
 		for(unsigned int i = 0; i < observers.size(); i++) 
 			observers.at(i)->Moved(grid, *activePlayer, desiredMove);
 		if( grid.CheckForWinner() != SpaceState::empty) 
-			return grid.Winner();
+			break;
 		activeSign= NextPlayer(activeSign);
 	}
 	lock = false;
-	return SpaceState::empty;
+	return grid.Winner();
 }
 
 
